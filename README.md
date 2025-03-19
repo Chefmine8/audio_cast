@@ -16,6 +16,7 @@ The mobile (only server file run, client is in development) and lightweight ("al
 ### Client
 - `start + ip`: Connects to a server.
 - `start + ip + port`: Connects to a server with a different port.
+- `start + ip + left or right`: Connects to a server and cast only right or left signal.
 - `stop`: Stops the connection to all servers.
 - `mul + start`: Creates a link between all servers.
 - `mul + stop`: Breaks the link between all servers.
@@ -63,6 +64,7 @@ Les versions mobiles (seulement le fichier serveur marche, le client est en cour
 ### Client
 - `start + ip` : Permet de se connecter à un serveur.
 - `start + ip + port` : Permet de se connecter à un serveur avec un port différent.
+- `start + ip + right ou left` : Permet de faire de se connecter au serveur en choisissant d'envoyer seulement le son de droite ou de gauche.
 - `stop` : Arrête la connexion à tous les serveurs.
 - `mul + start` : Permet de créer le lien entre tous les serveurs.
 - `mul + stop` : Permet de couper le lien entre tous les serveurs.
