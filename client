@@ -1,17 +1,28 @@
 client() {
 #Permet de start le client (client start (l'ip)).
 if [ "$1" = "start" ]; then
-	if [ ! -z "$2" ]; then
-		#Permet de start le client en l'appelant avec un port spécifique (client start (l'ip) (le port)).
-		if [ ! -z "$3" ]; then
-			pactl load-module module-tunnel-sink server="$2":"$3"
+    if [ ! -z "$2" ]; then
+        if [ ! -z "$3" ]; then
+	   if [ "$3" = "left" ]; then
+		echo "test"
+		pactl load-module module-tunnel-sink server="$2":42010 channels=2 channel_map=left,left
+	   elif [ "$3" = "right" ]; then
+		echo "test"
+                pactl load-module module-tunnel-sink server="$2":42010 channels=1 channel_map=right
+	   else
+		if [ ! -z "$4" ]; then
+			pactl load-module module-tunnel-sink server="$2":"$3" channels=2 channel_map="$4","$4"
 		else
-			pactl load-module module-tunnel-sink server="$2":42010
+			pactl load-module module-tunnel-sink server="$2":"$3"
 		fi
-		echo "Connexion success"
-	else
-		echo "Failed, recall me with server ip"
-	fi
+	   fi
+        else
+		pactl load-module module-tunnel-sink server="$2":42010
+        fi
+        echo "Connexion réussie"
+    else
+        echo "Erreur, veuillez rappeler avec l'adresse IP du serveur"
+    fi
 
 #Permet de stop le client (client stop).
 elif [ "$1" = "stop" ]; then
@@ -36,15 +47,53 @@ elif [ "$1" = "mul" ]; then
 
 #Permet de ce connecter automatiquement à tout le client d'un réseau.
 elif [ "$1" = "auto" ]; then
-	ips=$(fping -g "$2"/24 2>/dev/null | awk '/alive/ {print $1}')
-	for ip in $ips; do
-	        pactl load-module module-tunnel-sink server="$ip":42010
-        	echo "$ip connected"
-	done
+	#Salle 102 (client auto 1).
+	if [ "$2" = 1 ]; then
+		echo "Connection au client de la salle 102 en cours."
+		ips=$(fping -g 10.202.4.0/24 2>/dev/null | awk '/alive/ {print $1}')
+		for ip in $ips; do
+		    pactl load-module module-tunnel-sink server="$ip":42010
+		    echo "$ip connected"
+		done
+	#Salle 101B (client auto 2).
+	elif [ "$2" = 2 ]; then
+                ips=$(fping -g 10.202.18.0/24 2>/dev/null | awk '/alive/ {print $1}')
+                for ip in $ips; do
+                    pactl load-module module-tunnel-sink server="$ip":42010
+                    echo "$ip connected"
+                done
+	#Salle 403 (client auto 3).
+	elif [ "$2" = 3 ]; then
+                ips=$(fping -g 10.202.17.0/24 2>/dev/null | awk '/alive/ {print $1}')
+                for ip in $ips; do
+                    pactl load-module module-tunnel-sink server="$ip":42010
+                    echo "$ip connected"
+                done
+	#Wifi (client auto 4).
+	elif [ "$2" = 4 ]; then
+		ips=$(fping -g 10.117.254.0/24 2>/dev/null | awk '/alive/ {print $1}')
+                for ip in $ips; do
+                    pactl load-module module-tunnel-sink server="$ip":42010
+                    echo "$ip connected"
+                done
+		ips=$(fping -g 10.117.255.0/24 2>/dev/null | awk '/alive/ {print $1}')
+                for ip in $ips; do
+                    pactl load-module module-tunnel-sink server="$ip":42010
+                    echo "$ip connected"
+                done
+	elif [ "$2" = 5 ]; then
+                ips=$(fping -g 10.202."$3".0/24 2>/dev/null | awk '/alive/ {print $1}')
+                for ip in $ips; do
+                    pactl load-module module-tunnel-sink server="$ip"
+                    echo "$ip connected"
+                done
+
+	fi
+elif [ "$1" = "bluetooth" ]; then
+	blueberry
 else
 	echo "start -> start the client \n stop -> stop the client."
 fi
 }
 
-client "$1" "$2" "$3"
-
+client "$1" "$2" "$3" "$4"

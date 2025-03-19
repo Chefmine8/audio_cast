@@ -1,17 +1,29 @@
 client() {
 #Permet de start le client (client start (l'ip)).
+#Permet de start le client (client start (l'ip)).
 if [ "$1" = "start" ]; then
-	if [ ! -z "$2" ]; then
-		#Permet de start le client en l'appelant avec un port spécifique (client start (l'ip) (le port)).
-		if [ ! -z "$3" ]; then
-			pactl load-module module-tunnel-sink server="$2":"$3"
-		else
-			pactl load-module module-tunnel-sink server="$2":42010
-		fi
-		echo "Connexion success"
-	else
-		echo "Failed, recall me with server ip"
-	fi
+    if [ ! -z "$2" ]; then
+        if [ ! -z "$3" ]; then
+           if [ "$3" = "left" ]; then
+                echo "test"
+                pactl load-module module-tunnel-sink server="$2":42010 channels=2 channel_map=left,left
+           elif [ "$3" = "right" ]; then
+                echo "test"
+                pactl load-module module-tunnel-sink server="$2":42010 channels=1 channel_map=right
+           else
+                if [ ! -z "$4" ]; then
+                        pactl load-module module-tunnel-sink server="$2":"$3" channels=2 channel_map="$4","$4"
+                else
+                        pactl load-module module-tunnel-sink server="$2":"$3"
+                fi
+           fi
+        else
+                pactl load-module module-tunnel-sink server="$2":42010
+        fi
+        echo "Connexion réussie"
+    else
+        echo "Erreur, veuillez rappeler avec l'adresse IP du serveur"
+    fi
 
 #Permet de stop le client (client stop).
 elif [ "$1" = "stop" ]; then
