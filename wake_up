@@ -1,0 +1,25 @@
+power() {
+echo "$2"
+
+#Pour down
+elif [ "$1" = "down" ]; then
+    if [ "$2" = "auto" ]; then
+            ips=$(fping -g "$3" 2>/dev/null | awk '/alive/ {print $1}')
+            for ip in $ips; do
+                echo "shutdown" | nc -u -w 2 "$ip" 42012
+                echo "$ip éteint"
+            done
+    else
+        if [[ -z "$2" ]]; then
+            echo "Erreur : Adresse IP non spécifiée ou vide."
+            exit 1
+        else
+            echo "shutdown" | nc -u "$2" 42012
+            echo "$2 éteint"
+        fi
+    fi
+fi
+
+}
+
+power "$1" "$2" "$3"

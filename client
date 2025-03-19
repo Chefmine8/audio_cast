@@ -1,0 +1,50 @@
+client() {
+#Permet de start le client (client start (l'ip)).
+if [ "$1" = "start" ]; then
+	if [ ! -z "$2" ]; then
+		#Permet de start le client en l'appelant avec un port spécifique (client start (l'ip) (le port)).
+		if [ ! -z "$3" ]; then
+			pactl load-module module-tunnel-sink server="$2":"$3"
+		else
+			pactl load-module module-tunnel-sink server="$2":42010
+		fi
+		echo "Connexion success"
+	else
+		echo "Failed, recall me with server ip"
+	fi
+
+#Permet de stop le client (client stop).
+elif [ "$1" = "stop" ]; then
+	pactl unload-module module-tunnel-sink
+	echo "Fin du fun"
+
+#Permet d'intéragir avec plusieur server en simultané.
+elif [ "$1" = "mul" ]; then
+	#Permet de stop le multi (client mul stop).
+	if [ "$2" = "stop" ]; then
+		pactl unload-module module-combine-sink
+		echo "Multicast end"
+
+	#Permet de start le multi (client mul start).
+	elif [ "$2" = "start" ]; then
+		sinks=$(pactl list short sinks | awk '{print $2}')
+		slaves=$(echo $sinks | tr ' ' ',')
+		pactl load-module module-combine-sink slaves=$slaves
+		echo "Le bordel commence!!"
+		cava
+	fi
+
+#Permet de ce connecter automatiquement à tout le client d'un réseau.
+elif [ "$1" = "auto" ]; then
+	ips=$(fping -g "$2"/24 2>/dev/null | awk '/alive/ {print $1}')
+	for ip in $ips; do
+	        pactl load-module module-tunnel-sink server="$ip":42010
+        	echo "$ip connected"
+	done
+else
+	echo "start -> start the client \n stop -> stop the client."
+fi
+}
+
+client "$1" "$2" "$3"
+

@@ -1,0 +1,25 @@
+server() {
+if [ "$1" = "start" ]; then
+        ip=$(ip addr show | grep -oP 'inet \K[\d.]+' | sed -n '2p')
+        if [ ! -z "$2" ]; then
+                if [ ! -z "$3" ]; then
+                        pactl load-module module-native-protocol-tcp auth-ip-acl="$2" port="$3"
+                        echo "Server start ip: $ip port: $3 auth: $2"
+                else
+                        pactl load-module module-native-protocol-tcp auth-ip-acl="$2" port=42010
+                        echo "Server start ip: $ip port: 42010 auth: $2"
+                fi
+        else
+                pactl load-module module-native-protocol-tcp auth-anonymous=1 port=42010
+                echo "Server start ip: $ip port: 42010 auth: all"
+        fi
+        pactl set-sink-volume @DEFAULT_SINK@ 100%      
+elif [ "$1" = "stop" ]; then
+        pactl unload-module module-native-protocol-tcp
+        echo "Server down"
+else
+        echo "Recall me with start or stop on first argument."
+fi
+}
+server "$1" "$2" "$3"
+

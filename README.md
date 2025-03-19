@@ -7,7 +7,7 @@ Ce projet a pour but de permettre le transfert d'audio d'un appareil à un autre
 - cava  
 - fping  
 
-Les versions mobiles ne comportent aucune dépendance, si ce n'est PulseAudio ou PipeWire.  
+Les versions mobiles (en développement arrivé dans la semaine) et allégées ne comportent aucune dépendance, si ce n'est PulseAudio ou PipeWire.
 
 ---
 
@@ -29,7 +29,16 @@ Les versions mobiles ne comportent aucune dépendance, si ce n'est PulseAudio ou
 
 ---
 
-### Wake_up :  
-- `wake + lettre de la salle` : Permet de faire un Wake-on-LAN sur une salle.  
+### Power :  
 - `down + auto + plage d'ip` (ex : 192.168.1.0) : Permet d'éteindre tous les serveurs lancés sur une plage d'adresses IP.  
 - `down + ip` : Permet d'éteindre le serveur.  
+
+---
+
+Les versions mobiles et allégées ne support pas les commandes suivantes :
+
+###Client :
+- `auto + la plage d'ip`
+
+### Power : 
+Aucune n'est supporté en l'absence de netcat
