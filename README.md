@@ -9,7 +9,7 @@ This project aims to enable audio transfer from one device to another via PulseA
 - cava
 - fping
 
-The mobile (in development, expected within the week) and lightweight ("allegee") versions do not have any dependencies except for PulseAudio or PipeWire.
+The mobile (only server file run, client is in development) and lightweight ("allegee") versions do not have any dependencies except for PulseAudio or PipeWire.
 
 ---
 
@@ -56,7 +56,7 @@ Ce projet a pour but de permettre le transfert d'audio d'un appareil à un autre
 - cava
 - fping
 
-Les versions mobiles (en développement, arrivée dans la semaine) et allégées ne comportent aucune dépendance, si ce n'est PulseAudio ou PipeWire.
+Les versions mobiles (seulement le fichier serveur marche, le client est en cours de développement) et allégées ne comportent aucune dépendance, si ce n'est PulseAudio ou PipeWire.
 
 ---
 
