@@ -37,7 +37,7 @@ Les versions mobiles (en développement arrivé dans la semaine) et allégées n
 
 Les versions mobiles et allégées ne support pas les commandes suivantes :
 
-###Client :
+### Client :
 - `auto + la plage d'ip`
 
 ### Power : 
